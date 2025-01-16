@@ -1,0 +1,317 @@
+#!/usr/bin/env bash
+
+source bootstrap.sh
+
+# NOTICE
+# Some settings require "Full Disk Access" enabled for terminal in "System Preferences".
+# "Full Disk Access" can be disabled afterwards.
+
+if ! plutil -lint /Library/Preferences/com.apple.TimeMachine.plist >/dev/null ; then
+  fail "This script requires your terminal app to have Full Disk Access."
+  user "Add this terminal to the Full Disk Access list in System Preferences > Security & Privacy, quit the app, and re-run this script."
+  exit 1
+fi
+
+# Useful links
+# https://macos-defaults.com/finder/fxpreferredviewstyle.html
+# https://git.herrbischoff.com/awesome-macos-command-line/about/#keyboard
+# https://emmer.dev/blog/automate-your-macos-defaults/
+# https://hidutil-generator.netlify.app
+
+# Close any open System Preferences panes, to prevent them from overriding
+# settings we’re about to change
+osascript -e 'tell application "System Preferences" to quit'
+
+# Ask for the administrator password upfront
+sudo -v
+
+# Keep-alive: update existing `sudo` time stamp until `.macos` has finished
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+#
+# -- CONTROL CENTER --
+
+## Control Center: Battery - show percentage
+defaults -currentHost write com.apple.controlcenter BatteryShowPercentage -bool true
+
+## Control Center: Battery - always show mode
+defaults -currentHost write com.apple.controlcenter BatteryShowEnergyMode -bool true
+
+## Control Center: Now playing
+defaults -currentHost write com.apple.controlcenter NowPlaying -bool false
+
+## Require password immediately after sleep or screen saver begins
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 0
+
+## Stack items by kind in the Desktop
+/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy dateAdded" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:GroupBy Kind" ~/Library/Preferences/com.apple.finder.plist
+
+#
+# -- KEYBOARD SETTINGS -- REBOOT IS REQUIRED
+
+## Keyboad: Enabling key repeat
+defaults write -g ApplePressAndHoldEnabled -bool false
+
+## Keyboad: Key Repeat Rate
+defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
+defaults write -g InitialKeyRepeat -int 14 # normal minimum is 15 (225 ms)
+
+## Keyboad: Disable Auto-Correct
+defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
+
+## Keyboad: Disable automatic capitalization as it’s annoying when typing code
+defaults write -g NSAutomaticCapitalizationEnabled -bool false
+
+## Keyboad: Disable smart dashes as they’re annoying when typing code
+defaults write -g NSAutomaticDashSubstitutionEnabled -bool false
+
+## Keyboad: Disable automatic period substitution as it’s annoying when typing code
+defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
+
+## Keyboad: Disable smart quotes as they’re annoying when typing code
+defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
+
+## Keyboard: Enable Tab in modal dialogs - All controls
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+#
+# -- TRACKPAD/MOUSE --
+
+## Trackpad: enable tap to click for this user and for the login screen
+defaults write -g com.apple.mouse.tapBehavior -int 1
+
+## Trackpad: Disable browser's navigation with swipes
+defaults write -g AppleEnableSwipeNavigateWithScrolls -int 0
+
+#
+# -- DOCK SETTINGS --
+
+## Dock: Hide dock
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -int 0
+
+## Dock: Hiding recents in dock
+defaults write com.apple.dock show-recents -bool false
+
+## Dock: Showing only open/active applications
+defaults write com.apple.dock static-only -bool true
+
+#
+# -- FINDER --
+
+## Use list view in all Finder windows by default
+## Four-letter codes for the other view modes: `icnv`, `clmv`, `glyv`
+defaults write com.apple.finder "FXPreferredViewStyle" -string "clmv"
+
+## Finder: Sets default save target to be a local disk, not iCloud.
+defaults write -g NSDocumentSaveNewDocumentsToCloud -bool false
+
+## Finder: Automatically open a new Finder window when a volume is mounted
+defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
+defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true
+defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
+
+## Finder: Avoid creating .DS_Store files on network or USB volumes
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+
+## Finder: Disable the warning when changing a file extension
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+## Finder: When performing a search, search the current folder by default
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+## Finder: Set Default Finder Location to Home Folder
+defaults write com.apple.finder NewWindowTarget -string "PfLo" && \
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Downloads/"
+
+## Finder: Expand Save Panel by Default
+defaults write -g NSNavPanelExpandedStateForSaveMode -bool true
+defaults write -g NSNavPanelExpandedStateForSaveMode2 -bool true
+
+## Finder: Keep folders on top when sorting by name
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+
+## Finder: Display full POSIX path as Finder window title
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool false
+
+## Finder: show path bar
+defaults write com.apple.finder ShowPathbar -bool true
+
+## Finder: show status bar
+defaults write com.apple.finder ShowStatusBar -bool true
+
+## Finder: show all filename extensions
+defaults write -g AppleShowAllExtensions -bool true
+
+## Finder: show hidden files by default
+defaults write com.apple.finder AppleShowAllFiles -bool true
+
+## Finder: allow quitting via ⌘ + Q; doing so will also hide desktop icons
+defaults write com.apple.finder QuitMenuItem -bool true
+
+## Finder: disable window animations and Get Info animations
+defaults write com.apple.finder DisableAllAnimations -bool true
+
+## Finder: Show External Media on desktop - External HDs, thumb drives, etc.
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+
+## Finder: Show Removable Media on desktop (CDs, DVDs, iPods, etc.)
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+
+## Finder: Show ~/Library directory in finder
+chflags nohidden ~/Library
+
+#
+# -- SAFARI ---
+
+## Safari: Develop Menu and Web Inspector
+defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+defaults write -g WebKitDeveloperExtras -bool true
+
+## Safari: Enable “Do Not Track”
+defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
+
+## Safari Privacy: don’t send search queries to Apple
+defaults write com.apple.Safari UniversalSearchEnabled -bool false
+defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+
+## Safari: Restore session at launch
+defaults write com.apple.Safari AlwaysRestoreSessionAtLaunch -int 1
+
+## Safari: Show the full URL in the address bar (note: this still hides the scheme)
+defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+
+## Safari: Set Safari’s home page to `about:blank` for faster loading
+defaults write com.apple.Safari HomePage -string "about:blank"
+
+## Safari: Prevent Safari from opening ‘safe’ files automatically after downloading
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+
+## Safari: Hide Safari’s bookmarks bar by default
+defaults write com.apple.Safari ShowFavoritesBar -bool false
+
+## Safari: Hide Safari’s sidebar in Top Sites
+defaults write com.apple.Safari ShowSidebarInTopSites -bool false
+
+## Safari: Disable Safari’s thumbnail cache for History and Top Sites
+defaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
+
+## Safari: Make Safari’s search banners default to Contains instead of Starts With
+defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+
+## Safari: Remove useless icons from Safari’s bookmarks bar
+defaults write com.apple.Safari ProxiesInBookmarksBar "()"
+
+#
+# -- ACTIVITY MONITOR --
+
+## Activity Monitor: Show the main window when launching Activity Monitor
+defaults write com.apple.ActivityMonitor OpenMainWindow -bool true
+
+## Activity Monitor: Show all processes in Activity Monitor
+defaults write com.apple.ActivityMonitor ShowCategory -int 0
+
+## Activity Monitor: Sort Activity Monitor results by CPU usage
+defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
+defaults write com.apple.ActivityMonitor SortDirection -int 0
+
+#
+# -- TIME MACHINE --
+
+## Prevent Time Machine from prompting to use new hard drives as backup volume
+defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+
+#
+# -- HOT CORNERS --
+
+## Hot corners
+## Possible values:
+##  0: no-op
+##  2: Mission Control
+##  3: Show application windows
+##  4: Desktop
+##  5: Start screen saver
+##  6: Disable screen saver
+##  7: Dashboard
+## 10: Put display to sleep
+## 11: Launchpad
+## 12: Notification Center
+## 13: Lock Screen
+
+## Hot Corners: Top left screen corner → Mission Control
+defaults write com.apple.dock wvous-tl-corner -int 0
+defaults write com.apple.dock wvous-tl-modifier -int 0
+## Hot Corners: Top right screen corner → Desktop
+defaults write com.apple.dock wvous-tr-corner -int 0
+defaults write com.apple.dock wvous-tr-modifier -int 0
+## Hot Corners: Bottom left screen corner → Start screen saver
+defaults write com.apple.dock wvous-bl-corner -int 0
+defaults write com.apple.dock wvous-bl-modifier -int 0
+
+# -- PRINTER --
+
+## Printer: Expand Print Panel by Default
+defaults write -g PMPrintingExpandedStateForPrint -bool true
+defaults write -g PMPrintingExpandedStateForPrint2 -bool true
+
+## Printer: Quit Printer App After Print Jobs Complete
+defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
+
+# -- DATE --
+
+## Date: Thu 18 Aug 23:46:18
+defaults write com.apple.menuextra.clock DateFormat -string "EEE d MMM HH:mm"
+
+#
+# -- MONITORS --
+
+## https://tonsky.me/blog/monitors/ convinced me to try this:
+## Disabling subpixel font smoothing
+defaults write -g AppleFontSmoothing -int 0
+
+#
+# -- Sudo via Touch ID --
+
+## Touch ID: this is what we are going to add
+SUDO_TOUCH_ID='auth       sufficient     pam_tid.so'
+
+## Touch ID: this is the file we are going to add it to
+SUDO_FILE='/etc/pam.d/sudo'
+
+## Touch ID: this checks to see if the text is already in the file we want to modify
+fgrep -q "$SUDO_TOUCH_ID" "$SUDO_FILE"
+
+## Touch ID: here we save the exit code of the 'fgrep' command
+EXIT="$?"
+
+if [[ "$EXIT" == "0" ]]
+then
+	## if that code was zero, the file does not need to be modified
+	info "'$SUDO_FILE' already has correct entry."
+else
+	## if that code was not zero, we'll try to modify that file
+    sed -i '' -E 's/^(#.+)/\1\n'"$SUDO_TOUCH_ID"'/' $SUDO_FILE
+fi
+
+
+#
+# -- RELOADING APPS --
+
+killall Dock
+killall Finder
+killall Safari
+killall SystemUIServer
+killall cfprefsd
+
+info "Run \".macos-vm\" to apply VM specific settings."
+info "Don't forget to disable \"Full Disk Access\" for terminal app!"
+
+success "MacOS settings were changed!"
+user "Reboot is required for settings to be applied."

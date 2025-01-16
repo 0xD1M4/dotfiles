@@ -1,0 +1,15 @@
+.DS_Store
+.git
+.gitignore
+README.md
+
+zshrc
+.local
+
+Brewfile
+.macos
+.macos-vm
+homebrew.sh
+bootstrap.sh
+stow.sh
+git.sh

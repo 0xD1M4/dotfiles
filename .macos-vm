@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+source bootstrap.sh
+
+#
+# -- VM SPECIFIC --
+defaults write -g NSUserKeyEquivalents "{
+    'Lock Screen' = '@~^q';
+}"
+
+
+# Keyboard: Adding remaps using hidutil, it will be added as a launch agent
+success 'Mapping "CAPSLOCK"->"ESC", "RIGHT COMMAND"->"F18"'
+
+mkdir -p ~/Library/LaunchAgents/
+
+echo '<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.local.KeyRemapping</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/hidutil</string>
+        <string>property</string>
+        <string>--set</string>
+        <string>{"UserKeyMapping":[
+            {
+              "HIDKeyboardModifierMappingSrc": 0x700000039,
+              "HIDKeyboardModifierMappingDst": 0x700000029
+            },
+            {
+                "HIDKeyboardModifierMappingSrc": 0x7000000E7,
+                "HIDKeyboardModifierMappingDst": 0x70000006D
+            }
+        ]}</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>' > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
+
+# hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x7000000E7,"HIDKeyboardModifierMappingDst": 0x70000003A}]}'
+
+#
+# -- RELOADING APPS --
+
+killall Dock
+killall Finder
+killall Safari
+killall SystemUIServer
+killall cfprefsd

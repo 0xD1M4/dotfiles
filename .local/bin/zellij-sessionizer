@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+## Based on https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
+
+selected=$(find ~/work ~/personal -type d -mindepth 2 -maxdepth 5 -name '.git' -prune -exec dirname {} \; | sort -u | rg --passthru "$HOME" -r '~' | fzf | rg --passthru '~' -r "$HOME")
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+selected_name=$(basename "$selected" | tr . _)
+
+# If we're inside of zellij, detach
+if [[ -n "$ZELLIJ" ]]; then
+    zellij pipe --plugin file:~/.config/zellij/plugins/zellij-switch.wasm -- "--session=$selected_name --layout=~/.config/zellij/layout_editor.kdl"
+else
+    zellij -l ~/.config/zellij/layout_editor.kdl attach -c "$selected_name" options --default-cwd "$selected"
+fi

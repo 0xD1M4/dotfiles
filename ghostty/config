@@ -1,0 +1,27 @@
+theme = "Monokai Remastered"
+
+font-size = 14
+font-thicken = true
+font-feature = -calt
+
+window-decoration = false
+confirm-close-surface = false
+
+keybind = cmd+backspace=text:\x15
+
+keybind = cmd+s=text:\x1bw
+keybind = cmd+t=text:\x1b0
+
+keybind = cmd+1=text:\x1b1
+keybind = cmd+2=text:\x1b2
+keybind = cmd+3=text:\x1b3
+keybind = cmd+4=text:\x1b4
+keybind = cmd+5=text:\x1b5
+keybind = cmd+6=text:\x1b6
+
+# sending ctrl+/
+keybind = cmd+z=text:\x1f 
+
+# sending alt+r
+keybind = cmd+shift+z=text:\x1br
+
