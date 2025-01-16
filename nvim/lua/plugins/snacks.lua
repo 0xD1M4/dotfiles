@@ -16,7 +16,11 @@ return {
     -- words = { enabled = false },
 
     -- input = { enabled = true },
-    bigfile = { enabled = true },
+    bigfile = {
+      enabled = true,
+      notify = true, -- show notification when big file detected
+      size = 1 * 1024 * 1024, -- 1.5MB
+    },
   },
 
   keys = {

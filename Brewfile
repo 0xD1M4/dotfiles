@@ -22,7 +22,6 @@ brew 'jq'
 # brew 'tor'
 # brew 'keycastr'
 
-brew 'pnpm'
 brew 'python'
 # brew 'rust'
 brew 'fzf'
