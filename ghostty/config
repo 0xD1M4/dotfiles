@@ -7,17 +7,29 @@ font-feature = -calt
 window-decoration = false
 confirm-close-surface = false
 
+keybind = super+digit_1=unbind
+keybind = super+digit_2=unbind
+keybind = super+digit_3=unbind
+keybind = super+digit_4=unbind
+keybind = super+digit_5=unbind
+keybind = super+digit_6=unbind
+
+keybind = super+1=unbind
+keybind = super+2=unbind
+keybind = super+3=unbind
+keybind = super+4=unbind
+
 keybind = cmd+backspace=text:\x15
 
 keybind = cmd+s=text:\x1bw
 keybind = cmd+t=text:\x1b0
 
-keybind = cmd+1=text:\x1b1
-keybind = cmd+2=text:\x1b2
-keybind = cmd+3=text:\x1b3
-keybind = cmd+4=text:\x1b4
-keybind = cmd+5=text:\x1b5
-keybind = cmd+6=text:\x1b6
+keybind = super+digit_1=text:\x1b1
+keybind = super+digit_2=text:\x1b2
+keybind = super+digit_3=text:\x1b3
+keybind = super+digit_4=text:\x1b4
+keybind = super+digit_5=text:\x1b5
+keybind = super+digit_6=text:\x1b6
 
 # sending ctrl+/
 keybind = cmd+z=text:\x1f 

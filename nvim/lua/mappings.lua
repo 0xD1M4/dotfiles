@@ -110,8 +110,10 @@ map("n", "<leader>cl", "gcc", { desc = "toggle comment", remap = true })
 map("v", "<leader>cy", "yygccp", { desc = "Copy-comment-paste", remap = true })
 map("v", "<leader>cl", "gcc", { desc = "toggle comment", remap = true })
 
+map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action({apply=true})<cr>", { desc = "[C]ode [A]ction", remap = true })
+
 -- INSERT MODE --
 
 map("i", "<M-w>", "<Esc>:w!<cr>") -- Saving file using Cmd+S in insert mode
 
-map("i", "<M-BS>", "<C-W>") -- Deleting whole word using Alt+Backspace
+map("i", "<M-BS>", "<C-W>")       -- Deleting whole word using Alt+Backspace

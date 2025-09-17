@@ -12,7 +12,7 @@ selected_name=$(basename "$selected" | tr . _)
 
 # If we're inside of zellij, detach
 if [[ -n "$ZELLIJ" ]]; then
-    zellij pipe --plugin file:~/.config/zellij/plugins/zellij-switch.wasm -- "--session=$selected_name --layout=~/.config/zellij/layout_editor.kdl"
+    zellij pipe --plugin file:~/.config/zellij/plugins/zellij-switch.wasm -- "--session=$selected_name --cwd=$selected --layout=~/.config/zellij/layout_editor.kdl"
 else
     zellij -l ~/.config/zellij/layout_editor.kdl attach -c "$selected_name" options --default-cwd "$selected"
 fi
