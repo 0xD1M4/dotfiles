@@ -11,6 +11,8 @@ alias l='eza -l --icons --git -a'
 alias cat='bat'
 
 alias p='pnpm'
+alias b='bun'
+alias bx='bunx'
 
 # Git
 alias g='git'
@@ -27,3 +29,4 @@ alias vpn@r=""
 
 # Bins
 alias t='~/.local/bin/zellij-sessionizer'
+alias lgtm='~/.local/bin/lgtm'
