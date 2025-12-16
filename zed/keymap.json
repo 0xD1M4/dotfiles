@@ -22,8 +22,8 @@
   {
     "context": "Editor && (showing_code_actions || showing_completions)",
     "bindings": {
-      "ctrl-k": "editor::ContextMenuPrev",
-      "ctrl-p": "editor::ContextMenuPrev",
+      "ctrl-k": "editor::ContextMenuPrevious",
+      "ctrl-p": "editor::ContextMenuPrevious",
       "ctrl-j": "editor::ContextMenuNext",
       "ctrl-n": "editor::ContextMenuNext"
     }
@@ -41,11 +41,132 @@
     }
   },
 
+  // {
+  //   "context": "vim_mode == normal || vim_mode == visual",
+  //   "bindings": {
+  //     "space j": ["vim::PushSneak", {}],
+  //     "space J": ["vim::PushSneakBackward", {}]
+  //   }
+  // },
   {
-    "context": "vim_mode == normal || vim_mode == visual",
+    "context": "((VimControl && !menu) || (!Editor && !Terminal))",
     "bindings": {
-      "space j": ["vim::PushOperator", { "Sneak": {} }],
-      "space J": ["vim::PushOperator", { "SneakBackward": {} }]
+      "ctrl-l": "workspace::ActivatePaneRight"
+    }
+  },
+  {
+    "context": "((VimControl && !menu) || (!Editor && !Terminal))",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft"
+    }
+  },
+  {
+    "context": "((VimControl && !menu) || (!Editor && !Terminal))",
+    "bindings": {
+      "ctrl-k": "workspace::ActivatePaneUp"
+    }
+  },
+  {
+    "context": "((VimControl && !menu) || (!Editor && !Terminal))",
+    "bindings": {
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "cmd-u": "project_symbols::Toggle"
+    }
+  },
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "ctrl-t": null
+    }
+  },
+  {
+    "context": "vim_mode == literal",
+    "bindings": {
+      "ctrl-t": null
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-t": "terminal_panel::Toggle"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "cmd-1": ["pane::ActivateItem", 0]
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "cmd-2": ["pane::ActivateItem", 1]
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "cmd-3": ["pane::ActivateItem", 2]
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "cmd-4": ["pane::ActivateItem", 3]
+    }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "space e n": "editor::GoToDiagnostic"
+    }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "space e N": "editor::GoToPreviousDiagnostic"
+    }
+  },
+
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      // https://github.com/zed-industries/zed/issues/4753
+      // https://github.com/zed-industries/zed/issues/4270
+      "escape": "project_panel::ToggleFocus",
+      "enter": "project_panel::Open",
+      "o": "project_panel::NewDirectory",
+      "a": "project_panel::NewFile",
+      "r": "project_panel::Rename",
+      "x": "project_panel::Cut",
+      "y": "project_panel::Copy",
+      "p": "project_panel::Paste",
+      "d": "project_panel::Delete"
+    }
+  },
+
+  // https://github.com/zed-industries/zed/discussions/8485
+  {
+    "context": "vim_mode == normal && !menu",
+    "bindings": {
+      "space g g": [
+        "task::Spawn",
+        { "task_name": "start lazygit", "reveal_target": "center" }
+      ],
+      "space g f": [
+        "task::Spawn",
+        { "task_name": "start lazygit file log", "reveal_target": "center" }
+      ],
+
+      "space f f": [
+        "task::Spawn",
+        { "task_name": "Yazi(cwd)", "reveal_target": "center" }
+      ]
     }
   }
 ]
