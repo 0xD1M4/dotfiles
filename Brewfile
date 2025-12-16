@@ -29,15 +29,19 @@ brew 'lazygit'
 brew 'neovim'
 brew 'ripgrep'
 brew 'stow'
+brew 'yazi' # VM ONLY
 # brew 'mitmproxy'
 brew 'docker' # VM OFF -
 brew 'docker-compose' # VM OFF -
 # brew 'carapace'
 # brew ansible
+brew opencode # VM ONLY
 
 # Apps
 cask 'font-hack-nerd-font'
-cask 'bruno'
+cask 'helium-browser' # Chromium based browser with privacy focus
+cask 'bruno' # Postman alternative
+cask 'yaak' # Bruno/Postman alternative
 cask 'twingate'
 cask 'figma'
 cask 'ghostty'
@@ -67,3 +71,4 @@ cask 'telegram' # VM OFF -
 mas 'WireGuard', id: 1451685025 # VM OFF - WireGuard
 mas 'PDFgear: PDF Editor & Reader', id: 6469021132 # VM OFF - PDFgear
 mas 'Dropover - Easier Drag & Drop', id: 1355679052 # VM OFF - Dropover
+mas 'Spokenly: Voice to Text AI', id: 6740315592 # VM OFF - Spokenly
