@@ -7,23 +7,96 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "zoomed_padding": true,
+  "search": {
+    "center_on_match": true
+  },
+  "lsp_highlight_debounce": 275,
+  "diagnostics": {
+    "lsp_pull_diagnostics": {
+      "debounce_ms": 350
+    },
+    "inline": {
+      "padding": 10,
+      "min_column": 0,
+      "update_debounce_ms": 750,
+      "enabled": true
+    }
+  },
+  "prettier": {
+    "allowed": true
+  },
+  "colorize_brackets": true,
+  "tab_size": 2,
+  "snippet_sort_order": "bottom",
+  "sticky_scroll": {
+    "enabled": true
+  },
+  "vertical_scroll_margin": 20.0,
+  "git_panel": {},
+  "outline_panel": {},
+  "active_pane_modifiers": {
+    "border_size": 4.0,
+    "inactive_opacity": 0.4
+  },
+  "use_system_window_tabs": false,
+  "tabs": {
+    "git_status": false,
+    "file_icons": false
+  },
+  "tab_bar": {
+    "show_nav_history_buttons": true,
+    "show": false
+  },
+  "title_bar": {
+    "show_menus": false,
+    "show_sign_in": true,
+    "show_user_picture": false,
+    "show_onboarding_banner": false,
+    "show_project_items": true,
+    "show_branch_name": true,
+    "show_branch_icon": false
+  },
+  "project_panel": {
+    "button": true
+  },
+  "jsx_tag_auto_close": {
+    "enabled": false
+  },
+  "toolbar": {
+    "selections_menu": true,
+    "code_actions": false,
+    "agent_review": true,
+    "breadcrumbs": true,
+    "quick_actions": true
+  },
+  "agent_ui_font_size": 14.0,
+  "ui_font_family": "Hack Nerd Font",
+  "buffer_font_weight": 500.0,
+  "buffer_font_family": "Hack Nerd Font Mono",
+  "icon_theme": "Colored Zed Icons Theme Dark",
   "theme": "onedark",
   "telemetry": {
     "diagnostics": false,
     "metrics": false
   },
   "vim_mode": true,
-  "ui_font_size": 16,
-  "buffer_font_size": 16.0,
-  "relative_line_numbers": true,
+  "ui_font_size": 16.0,
+  "buffer_font_size": 14.0,
+  "relative_line_numbers": "enabled",
   "cursor_blink": false,
   "scrollbar": {
     "show": "never"
   },
   "buffer_line_height": {
-    "custom": 1.6
+    "custom": 1.55
   },
   "vim": {
-    "enable_vim_sneak": true
+    // "enable_vim_sneak": true
+  },
+  "theme_overrides": {
+    "onedark": {
+      "terminal.background": "#0c0c0c"
+    }
   }
 }
