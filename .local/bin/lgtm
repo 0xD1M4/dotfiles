@@ -19,7 +19,7 @@ SERVER_PID=""
 SERVER_PORT=""
 SESSION_ID=""
 TAIL_PID=""
-TUI=0
+CLI=0
 VERBOSE=0
 EXTRA_PROMPT=""
 EXTRA_ARGS=()
@@ -38,7 +38,7 @@ readonly BASE_PROMPT='You are a git commit assistant. Your job is to:
   [optional body]
   [optional footer(s)]
 - If changes are unrelated, create multiple commits.
-- Only group changes that are logically related and should be committed together.
+- Only group changes that are logically related and should be committed together (including configuration and backup files).
 - Output a summary of the commits you create, including the files in each commit.
 - Do not make any code changes yourself; only stage and commit files as needed.
 - Be atomic and precise. Never mix unrelated changes in a single commit.
@@ -85,8 +85,8 @@ parse_args() {
                 VERBOSE=1
                 shift
                 ;;
-            --tui)
-                TUI=1
+            --cli)
+                CLI=1
                 shift
                 ;;
             -P|--push)
@@ -343,7 +343,7 @@ main() {
     trap cleanup EXIT INT TERM HUP
 
 
-    if [[ "$TUI" -eq 1 ]]; then
+    if [[ "$CLI" -eq 0 ]]; then
       log "Running commit agent..."
 
       local prompt
