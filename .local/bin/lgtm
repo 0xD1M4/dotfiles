@@ -10,7 +10,7 @@ set -e
 # ============================================================================
 
 # --- Configuration ---
-readonly MODEL="opencode/big-pickle"
+readonly MODEL="opencode/grok-code"
 readonly HOSTNAME="127.0.0.1"
 readonly SERVER_READY_TIMEOUT=30
 
@@ -351,17 +351,16 @@ main() {
       prompt=$(build_prompt)
 
       opencode -m "$MODEL" "${EXTRA_ARGS[@]}" --prompt "$prompt"
-      exit 0
+    else
+      # Start and wait for server
+      start_server
+      wait_for_server || exit 1
+
+      # Create session and run agent
+      create_session || exit 1
+      run_agent
+      # push_to_remote
     fi
-
-    # Start and wait for server
-    start_server
-    wait_for_server || exit 1
-
-    # Create session and run agent
-    create_session || exit 1
-    run_agent
-    # push_to_remote
 
     log "Done!"
 }
