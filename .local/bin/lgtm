@@ -10,11 +10,22 @@ set -e
 # ============================================================================
 
 # --- Configuration ---
-readonly MODEL="opencode/grok-code"
+readonly MODELS="opencode/big-pickle
+opencode/grok-code
+lmstudio/mistralai/devstral-small-2-2512
+lmstudio/glm-4.6v-flash-mlx@4bit"
 readonly HOSTNAME="127.0.0.1"
 readonly SERVER_READY_TIMEOUT=30
 
 # --- Global state ---
+MODEL=$(echo "$MODELS" | fzf --prompt="Select model > ") # || $(echo "$MODELS" | head -1)
+
+# Exit if no model is selected
+if [ -z "$MODEL" ]; then
+  echo "❌ No model selected – aborting."
+  exit 1
+fi
+
 SERVER_PID=""
 SERVER_PORT=""
 SESSION_ID=""
