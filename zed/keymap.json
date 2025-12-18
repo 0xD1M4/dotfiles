@@ -37,7 +37,8 @@
       "space w -": "pane::SplitDown",
       "g o": "editor::GoToTypeDefinition",
       "space c l": "editor::ToggleComments",
-      "space p p": "projects::OpenRecent"
+      "space p p": "projects::OpenRecent",
+      "space tab": ["tab_switcher::Toggle", { "select_last": true }]
     }
   },
 
