@@ -169,5 +169,11 @@
         { "task_name": "Yazi(cwd)", "reveal_target": "center" }
       ]
     }
+  },
+  {
+    "context": "((VimControl && !menu) || (!Editor && !Terminal))",
+    "bindings": {
+      "space w k": "workspace::CloseInactiveTabsAndPanes"
+    }
   }
 ]
