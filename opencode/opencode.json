@@ -6,5 +6,23 @@
     "webfetch": "deny",
     "doom_loop": "ask",
     "external_directory": "ask"
+  },
+
+  "provider": {
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio",
+      "options": {
+        "baseURL": "http://192.168.0.250:1234/v1"
+      },
+      "models": {
+        "glm-4.6v-flash-mlx@4bit": {
+          "name": "GLM 4.6v Flash MLX 4bit (local)"
+        },
+        "mistralai/devstral-small-2-2512": {
+          "name": "Devstral Small 2-2512 (local)"
+        }
+      }
+    }
   }
 }
