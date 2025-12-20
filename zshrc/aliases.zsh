@@ -30,3 +30,4 @@ alias vpn@r=""
 # Bins
 alias t='~/.local/bin/zellij-sessionizer'
 alias lgtm='~/.local/bin/lgtm'
+alias fb='~/.local/bin/file-browser'
