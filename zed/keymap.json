@@ -166,7 +166,7 @@
 
       "space f f": [
         "task::Spawn",
-        { "task_name": "Yazi(cwd)", "reveal_target": "center" }
+        { "task_name": "File Browser(cwd)", "reveal_target": "center" }
       ]
     }
   },
