@@ -1,0 +1,82 @@
+#!/bin/bash
+
+# More icons here - https://github.com/nvim-tree/nvim-web-devicons/blob/8dcb311b0c92d460fac00eac706abd43d94d68af/lua/nvim-web-devicons/default/icons_by_file_extension.lua
+
+export DIR_PATH=$(realpath "${1:-$(pwd)}") # Getting absolute path for a given directory
+export TMP_FILE="/tmp/fzf-dir-$$" # Saving temp file with a PID name
+
+export EZA_ARGS='-la1 --classify=always --color=always --icons=always --group-directories-first | sed -e "s///g" -e "s///g"'
+
+echo "$DIR_PATH/" > $TMP_FILE
+
+cleanup() {
+  rm $TMP_FILE
+}
+
+start_file_browser() {
+  trap cleanup EXIT INT TERM HUP
+
+  local ENTER_TRANSFORM='
+    DIR="$(cat $TMP_FILE)"
+
+    if [ -z {} ]; then
+      if [ -n {q} ]; then
+        echo "become(echo "$DIR$FZF_QUERY")"
+      fi
+
+      exit
+    fi
+
+    # NOTE: Extracting selected option and normalizing it (deleting eza formatting)
+    SELECTED="{}"
+    SELECTED="${SELECTED#* }"
+    SELECTED="${SELECTED%?}"
+
+    if [[ "${SELECTED:0,-1}" == "*" ]]; then
+      echo "become(echo "$DIR${SELECTED::-1}")"
+      exit
+    fi
+
+    if [[ "${SELECTED:0,-1}" == "/" ]]; then
+      STR="$(cat $TMP_FILE)/$SELECTED"
+      STR="${STR//\/\///}" # Removing double / from string
+
+      echo $STR > $TMP_FILE
+
+      echo "first+change-header($STR)+clear-query+reload:eza $STR $EZA_ARGS"
+      exit
+    fi
+
+    echo "become(echo "$DIR$SELECTED")"
+    exit
+  '
+
+  local CTRL_H='
+    STR="$(cat $TMP_FILE)"
+    STR="${STR//\/\///}" # Removing double / from string
+    STR="${STR::-1}"
+    STR="${STR%/*}"
+    STR="$STR/"
+
+    echo $STR > $TMP_FILE
+
+    echo "first+change-header($STR)+clear-query+reload:eza $STR $EZA_ARGS"
+  '
+
+  SELECTED=$(eval "eza $DIR_PATH $EZA_ARGS" | fzf --ansi --reverse --border=rounded \
+  --prompt="> " \
+  --no-sort \
+  --tiebreak=pathname \
+  --header="$DIR_PATH/" \
+  --footer="Enter: Open directory/Select file • ESC: Exit" \
+  --bind=ctrl-r:toggle-sort \
+  --bind="ctrl-h:transform:$CTRL_H" \
+  --bind="backward-eof:transform:$CTRL_H" \
+  --bind change:first \
+  --bind="enter:transform:$ENTER_TRANSFORM"
+  )
+
+  [[ -n $SELECTED ]] && $EDITOR "$SELECTED"
+}
+
+start_file_browser
