@@ -64,6 +64,17 @@ start_file_browser() {
     echo "first+change-header($STR)+clear-query+change-prompt(".../$DIR/")+reload:eza $STR $EZA_ARGS"
   '
 
+  local PREVIEW='
+    DIR="$(cat $TMP_FILE)"
+    STR={};
+    STR="${STR#* }"
+    if [[ "${STR:0,-1}" == "/" ]]; then
+      eza "$DIR$STR" -a --tree --icons=always --color=always --classify=always --level=1 | head -n 80
+    else
+      bat "$DIR${STR%%\*}" -f
+    fi
+  '
+
   SELECTED=$(eval "eza $DIR_PATH $EZA_ARGS" | fzf --ansi --reverse --border=rounded \
   --prompt="> " \
   --no-sort \
@@ -71,12 +82,13 @@ start_file_browser() {
   --tiebreak=pathname \
   --prompt=".../$(basename $DIR_PATH)/" \
   --header="$DIR_PATH/" \
-  --footer="Enter: Open directory/Select file • ESC: Exit" \
+  --footer="Enter: Open directory/Select file • CTRL+H: Go to parent directory • ESC: Exit" \
   --bind=ctrl-r:toggle-sort \
   --bind="ctrl-h:transform:$CTRL_H" \
   --bind="backward-eof:transform:$CTRL_H" \
   --bind change:first \
-  --bind="enter:transform:$ENTER_TRANSFORM"
+  --bind="enter:transform:$ENTER_TRANSFORM" \
+  --preview="$PREVIEW"
   )
 
   [[ -n $SELECTED ]] && $EDITOR "$SELECTED"
