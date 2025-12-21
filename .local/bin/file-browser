@@ -43,7 +43,7 @@ start_file_browser() {
 
       echo $STR > $TMP_FILE
 
-      echo "first+change-header($STR)+clear-query+reload:eza $STR $EZA_ARGS"
+      echo "first+change-header($STR)+clear-query+change-prompt(".../$SELECTED")+reload:eza $STR $EZA_ARGS"
       exit
     fi
 
@@ -60,13 +60,16 @@ start_file_browser() {
 
     echo $STR > $TMP_FILE
 
-    echo "first+change-header($STR)+clear-query+reload:eza $STR $EZA_ARGS"
+    DIR=$(basename $STR)
+    echo "first+change-header($STR)+clear-query+change-prompt(".../$DIR/")+reload:eza $STR $EZA_ARGS"
   '
 
   SELECTED=$(eval "eza $DIR_PATH $EZA_ARGS" | fzf --ansi --reverse --border=rounded \
   --prompt="> " \
   --no-sort \
+  --margin=2,5 \
   --tiebreak=pathname \
+  --prompt=".../$(basename $DIR_PATH)/" \
   --header="$DIR_PATH/" \
   --footer="Enter: Open directory/Select file • ESC: Exit" \
   --bind=ctrl-r:toggle-sort \
