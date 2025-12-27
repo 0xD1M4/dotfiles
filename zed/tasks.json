@@ -89,7 +89,7 @@
     // "command": "yazi $ZED_FILE",
     "command": "~/.local/bin/file-browser \"$ZED_DIRNAME\"",
     // "command": "fb \"$ZED_FILE\" --chooser-file /tmp/yazi-path-zed && ([[ $(cat /tmp/yazi-path-zed) ]] && (zed -a $(cat /tmp/yazi-path-zed))); (echo '' > /tmp/yazi-path-zed)",
-    "env": { "EDITOR": "zed -a", "VISUAL": "zed -a" },
+    "env": { "EDITOR": "zed", "VISUAL": "zed" },
     "hide": "always",
     "use_new_terminal": true,
     "allow_concurrent_runs": false,
