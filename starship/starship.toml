@@ -43,8 +43,9 @@ vicmd_symbol = "[N >](bold blue)"
 
 
 [custom.git_name]
+shell = ["sh"]
 command = "git config user.name"
-format = "by [$output]($style) "
+format = "as [$output]($style) "
 style = "bright-yellow bold"
 when=""
 
