@@ -21,7 +21,7 @@ start_file_browser() {
 
     if [ -z {} ]; then
       if [ -n {q} ]; then
-        echo "become(echo "$DIR$FZF_QUERY")"
+        echo "become(echo "\"$DIR$FZF_QUERY\"")"
       fi
 
       exit
@@ -33,7 +33,7 @@ start_file_browser() {
     SELECTED="${SELECTED%?}"
 
     if [[ "${SELECTED:0,-1}" == "*" ]]; then
-      echo "become(echo "$DIR${SELECTED::-1}")"
+      echo "become(echo "\"$DIR${SELECTED::-1}\"")"
       exit
     fi
 
@@ -43,11 +43,11 @@ start_file_browser() {
 
       echo $STR > $TMP_FILE
 
-      echo "first+change-header($STR)+clear-query+change-prompt(".../$SELECTED")+reload:eza $STR $EZA_ARGS"
+      echo "first+change-header($STR)+clear-query+change-prompt(".../$SELECTED")+reload:eza \"$STR\" $EZA_ARGS"
       exit
     fi
 
-    echo "become(echo "$DIR$SELECTED")"
+    echo "become(echo "\"$DIR$SELECTED\"")"
     exit
   '
 
@@ -61,7 +61,7 @@ start_file_browser() {
     echo $STR > $TMP_FILE
 
     DIR=$(basename $STR)
-    echo "first+change-header($STR)+clear-query+change-prompt(".../$DIR/")+reload:eza $STR $EZA_ARGS"
+    echo "first+change-header($STR)+clear-query+change-prompt(".../$DIR/")+reload:eza \"$STR\" $EZA_ARGS"
   '
 
   local PREVIEW='
@@ -75,7 +75,15 @@ start_file_browser() {
     fi
   '
 
-  SELECTED=$(eval "eza $DIR_PATH $EZA_ARGS" | fzf --ansi --reverse --border=rounded \
+
+  local TRANSFORMER='
+    echo -n change-preview-window:
+    if (( FZF_COLUMNS < 100 )); then
+      echo "hidden"
+    fi
+  '
+
+  SELECTED=$(eval "eza \"$DIR_PATH\" $EZA_ARGS" | fzf --ansi --reverse --border=rounded \
   --prompt="> " \
   --no-sort \
   --margin=2,5 \
@@ -88,9 +96,12 @@ start_file_browser() {
   --bind="backward-eof:transform:$CTRL_H" \
   --bind change:first \
   --bind="enter:transform:$ENTER_TRANSFORM" \
-  --preview="$PREVIEW"
+  --preview="$PREVIEW" \
+  --bind "start:transform($TRANSFORMER),resize:transform($TRANSFORMER)" \
+  --keep-right
   )
 
+  # TODO: Escape spaces
   [[ -n $SELECTED ]] && $EDITOR "$SELECTED"
 }
 

@@ -35,10 +35,12 @@ bindkey -r '^t' # Unbinding the key
 
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
-bindkey '^f' fzf-file-widget 
+bindkey '^f' fzf-file-widget
 
 # bindkey "^/" undo # Ctrl+/ to undo
+bindkey "^Z" undo # ctrl-z to undo
 bindkey "^[r" redo # Alt-r to redo
+bindkey "^]" redo # ctrl+] to redo
 
 export KEYTIMEOUT=1 # Faster mode switching insert/normal
 

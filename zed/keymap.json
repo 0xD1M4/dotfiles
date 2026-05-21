@@ -100,25 +100,12 @@
   {
     "context": "Terminal",
     "bindings": {
-      "cmd-1": ["pane::ActivateItem", 0]
-    }
-  },
-  {
-    "context": "Terminal",
-    "bindings": {
-      "cmd-2": ["pane::ActivateItem", 1]
-    }
-  },
-  {
-    "context": "Terminal",
-    "bindings": {
-      "cmd-3": ["pane::ActivateItem", 2]
-    }
-  },
-  {
-    "context": "Terminal",
-    "bindings": {
-      "cmd-4": ["pane::ActivateItem", 3]
+      "cmd-1": ["pane::ActivateItem", 0],
+      "cmd-2": ["pane::ActivateItem", 1],
+      "cmd-3": ["pane::ActivateItem", 2],
+      "cmd-4": ["pane::ActivateItem", 3],
+      "cmd-z": ["terminal::SendKeystroke", "ctrl-z"],
+      "cmd-shift-z": ["terminal::SendKeystroke", "ctrl-]"]
     }
   },
   {

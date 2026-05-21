@@ -4,6 +4,7 @@ alias ..="cd .."
 # Utils
 alias v='nvim'
 alias nv='nvim'
+alias docker=podman
 
 alias z='zellij'
 

@@ -13,9 +13,12 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "LM Studio",
       "options": {
-        "baseURL": "http://192.168.0.250:1234/v1"
+        "baseURL": "http://192.168.0.82:1234/v1"
       },
       "models": {
+        "qwen/qwen3.5-35b-a3b": {
+          "name": "QWEN3.5 35 A3B (local)"
+        },
         "glm-4.6v-flash-mlx@4bit": {
           "name": "GLM 4.6v Flash MLX 4bit (local)"
         },
